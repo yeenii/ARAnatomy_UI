@@ -1,10 +1,11 @@
 ﻿using Dummiesman;
 using System.IO;
 using UnityEngine;
+using UnityEditor;
 
 public class ObjFromFile : MonoBehaviour
 {
-    TransformData td;
+    TransformData td; //TransformData.cs
    
     public string objPath = string.Empty;
     //string[] objPath = new string[50]; //파일 경로
@@ -14,11 +15,15 @@ public class ObjFromFile : MonoBehaviour
     public GameObject[] loadedObject = new GameObject[100]; //인체모델 100개
     public static int q = 0; //loadedObject[q]
     double [,] tScale = new double[100, 3]; //100개 비율 데이터 저장 
-   
+
+    public Material mat;     // Materials 
+    string ModelName = string.Empty; 
+
+    
 
     public void OnGUI() //파일 임포트 UI
     {
-        td = GameObject.Find("TransformManager").GetComponent<TransformData>();
+        td = GameObject.Find("GameManager").GetComponent<TransformData>();
             
         objPath = GUI.TextField(new Rect(0, 0, 256, 32), objPath);
         GUI.Label(new Rect(0, 0, 256, 32), "Obj Path:");
@@ -35,13 +40,15 @@ public class ObjFromFile : MonoBehaviour
                       
                 loadedObject[q] = new OBJLoader().Load(objPath);
                 error = string.Empty;
+               ModelName =  loadedObject[q].name;
                 //DontDestroyOnLoad(loadedObject[i]);
 
-                if (loadedObject[q].name == "Skin" && objPath.Contains("Skin.obj") == true)
-                    m = 0;
 
-                if (loadedObject[q].name == "Heart" && objPath.Contains("Heart.obj") == true)
-                    m = 1;
+                SearchModel(); //모델 검색 
+
+                //material 적용
+                mat = Resources.Load<Material>("Material/" + ModelName);
+                loadedObject[q].transform.GetChild(0).GetComponent<MeshRenderer>().material = mat; 
 
                 ModelVal(); //모델 위치, 각도, 크기 함수 
 
@@ -51,7 +58,7 @@ public class ObjFromFile : MonoBehaviour
 
             }
 
-            if (!string.IsNullOrWhiteSpace(error))
+        if (!string.IsNullOrWhiteSpace(error))
         {
             GUI.color = Color.red;
             GUI.Box(new Rect(0, 64, 256 + 64, 32), error);
@@ -60,6 +67,17 @@ public class ObjFromFile : MonoBehaviour
                 
         }
     } //OnGUI
+
+    public void SearchModel() //모델 검색 
+    {
+        //모델 검색 
+        if (ModelName == "Skin" && objPath.Contains("Skin.obj") == true)
+            m = 0;
+
+
+        if (ModelName == "Heart" && objPath.Contains("Heart.obj") == true)
+            m = 1;
+    }
 
     public void ModelVal() //인체모델 위치, 각도, 크기
     {
