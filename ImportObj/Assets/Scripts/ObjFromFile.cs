@@ -2,6 +2,7 @@
 using System.IO;
 using UnityEngine;
 using UnityEditor;
+using UnityEngine.UI;
 
 public class ObjFromFile : MonoBehaviour
 {
@@ -10,16 +11,20 @@ public class ObjFromFile : MonoBehaviour
     public string objPath = string.Empty;
     //string[] objPath = new string[50]; //파일 경로
     string error = string.Empty;
- 
+    string ModelName = string.Empty;
+
     public static int m = 0; //model 번호 
     public GameObject[] loadedObject = new GameObject[100]; //인체모델 100개
     public static int q = 0; //loadedObject[q]
     double [,] tScale = new double[100, 3]; //100개 비율 데이터 저장 
 
     public Material mat;     // Materials 
-    string ModelName = string.Empty; 
 
-    
+    //Opacity
+    private Material currentMat;
+    public float alpha = 0.2f;
+    public Slider[] slider;
+    public GameObject sld;
 
     public void OnGUI() //파일 임포트 UI
     {
@@ -45,12 +50,17 @@ public class ObjFromFile : MonoBehaviour
 
 
                 SearchModel(); //모델 검색 
+                ModelVal(); //모델 위치, 각도, 크기 함수
 
                 //material 적용
-                mat = Resources.Load<Material>("Material/" + ModelName);
-                loadedObject[q].transform.GetChild(0).GetComponent<MeshRenderer>().material = mat; 
+                mat = Resources.Load<Material>("Materials/" + ModelName);
+                loadedObject[q].transform.GetChild(0).GetComponent<MeshRenderer>().material = mat;
 
-                ModelVal(); //모델 위치, 각도, 크기 함수 
+
+                //opacity
+                currentMat = loadedObject[q].transform.GetChild(0).GetComponent<MeshRenderer>().material;            
+                slider[m].onValueChanged.AddListener(delegate { ChangeAlphaOnValueChange(); });
+                
 
                 //다음 모델 추가 
                 if (loadedObject.Length > q)
@@ -67,6 +77,19 @@ public class ObjFromFile : MonoBehaviour
                 
         }
     } //OnGUI
+
+    //opacity
+    public void ChangeAlphaOnValueChange()
+    {
+        ChangeAlpha(currentMat, slider[m].value);
+    }
+
+    void ChangeAlpha(Material mat, float alphaVal)
+    {
+        Color oldColor = mat.color;
+        Color newColor = new Color(oldColor.r, oldColor.g, oldColor.b, alphaVal);
+        mat.SetColor("_Color", newColor);
+    }
 
     public void SearchModel() //모델 검색 
     {
