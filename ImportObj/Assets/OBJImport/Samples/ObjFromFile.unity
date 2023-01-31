@@ -166,6 +166,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objPath: 
+  ModelName: 
   loadedObject:
   - {fileID: 0}
   - {fileID: 0}
@@ -268,11 +269,8 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   mat: {fileID: 0}
+  currentMat: {fileID: 0}
   alpha: 0.2
-  slider:
-  - {fileID: 1556104547525870765}
-  - {fileID: 1556104547167400607}
-  sld: {fileID: 1556104546964587892}
 --- !u!4 &53302709
 Transform:
   m_ObjectHideFlags: 0
@@ -981,7 +979,7 @@ RectTransform:
   - {fileID: 1556104547525870764}
   - {fileID: 1556104547167400606}
   m_Father: {fileID: 7218565112825718103}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1787,7 +1785,7 @@ RectTransform:
   - {fileID: 7218565111539515355}
   - {fileID: 5624105364085382291}
   m_Father: {fileID: 7218565112825718103}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2281,8 +2279,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 5624105364017181899}
   - {fileID: 1556104546964587893}
+  - {fileID: 5624105364017181899}
   m_Father: {fileID: 1348130367}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

@@ -11,7 +11,7 @@ public class ObjFromFile : MonoBehaviour
     public string objPath = string.Empty;
     //string[] objPath = new string[50]; //파일 경로
     string error = string.Empty;
-    string ModelName = string.Empty;
+    public string ModelName = string.Empty;
 
     public static int m = 0; //model 번호 
     public GameObject[] loadedObject = new GameObject[100]; //인체모델 100개
@@ -21,10 +21,9 @@ public class ObjFromFile : MonoBehaviour
     public Material mat;     // Materials 
 
     //Opacity
-    private Material currentMat;
+    public Material currentMat;
     public float alpha = 0.2f;
-    public Slider[] slider;
-    public GameObject sld;
+    
 
     public void OnGUI() //파일 임포트 UI
     {
@@ -56,11 +55,9 @@ public class ObjFromFile : MonoBehaviour
                 mat = Resources.Load<Material>("Materials/" + ModelName);
                 loadedObject[q].transform.GetChild(0).GetComponent<MeshRenderer>().material = mat;
 
-
                 //opacity
-                currentMat = loadedObject[q].transform.GetChild(0).GetComponent<MeshRenderer>().material;            
-                slider[m].onValueChanged.AddListener(delegate { ChangeAlphaOnValueChange(); });
-                
+                loadedObject[q].transform.GetChild(0).gameObject.AddComponent<OpacityController>(); //모델에 컴포넌트에 스크립트 추가 
+
 
                 //다음 모델 추가 
                 if (loadedObject.Length > q)
@@ -73,23 +70,12 @@ public class ObjFromFile : MonoBehaviour
             GUI.color = Color.red;
             GUI.Box(new Rect(0, 64, 256 + 64, 32), error);
             GUI.color = Color.white;
-        }     
-                
+        }
+
+       
         }
     } //OnGUI
 
-    //opacity
-    public void ChangeAlphaOnValueChange()
-    {
-        ChangeAlpha(currentMat, slider[m].value);
-    }
-
-    void ChangeAlpha(Material mat, float alphaVal)
-    {
-        Color oldColor = mat.color;
-        Color newColor = new Color(oldColor.r, oldColor.g, oldColor.b, alphaVal);
-        mat.SetColor("_Color", newColor);
-    }
 
     public void SearchModel() //모델 검색 
     {
