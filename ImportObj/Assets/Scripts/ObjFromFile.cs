@@ -56,7 +56,10 @@ public class ObjFromFile : MonoBehaviour
                 loadedObject[q].transform.GetChild(0).GetComponent<MeshRenderer>().material = mat;
 
                 //opacity
-                loadedObject[q].transform.GetChild(0).gameObject.AddComponent<OpacityController>(); //모델에 컴포넌트에 스크립트 추가 
+                loadedObject[q].transform.GetChild(0).gameObject.AddComponent<OpacityController>(); //모델 컴포넌트에 스크립트 추가 
+
+                //toggle
+                loadedObject[q].transform.GetChild(0).gameObject.AddComponent<ToggleController>(); //모델 컴포넌트에 스크립트 추가 
 
 
                 //다음 모델 추가 
